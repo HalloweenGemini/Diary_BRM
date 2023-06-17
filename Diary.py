@@ -31,7 +31,7 @@ def to_excel(df):
     worksheet = writer.sheets['Sheet1']
     format1 = workbook.add_format({'num_format': '0.00'}) 
     worksheet.set_column('A:A', None, format1)  
-    writer.save()
+    writer.close()
     processed_data = output.getvalue()
     return processed_data
 
@@ -40,7 +40,7 @@ dc_xlsx = st.file_uploader("퇴원목록")
 op_xlsx = st.file_uploader("수술목록")
 
 writer = pd.ExcelWriter('Total.xlsx', engine='xlsxwriter')
-writer.save()
+writer.close()
 
 if adm_xlsx is not None : 
     adm = pd.read_excel(adm_xlsx, header = 2)
@@ -53,7 +53,7 @@ if adm_xlsx is not None :
         df_date.to_excel(writer, sheet_name=f'{adm_date} - 입원')  
         df_date.to_excel(writer_total, sheet_name=f'{adm_date} - 입원')  
         
-    writer.save()
+    writer.close()
     writer_total.save()
     
     wb_a = load_workbook("입원.xlsx")
@@ -106,7 +106,7 @@ if dc_xlsx is not None :
         df_date.to_excel(writer, sheet_name=f'{dc_date} - 퇴원')
         df_date.to_excel(writer_total, sheet_name=f'{dc_date} - 퇴원')
         
-    writer.save()
+    writer.close()
     writer_total.save()
     wb_d = load_workbook("퇴원.xlsx")
     wb_t = load_workbook("Total.xlsx")
@@ -158,7 +158,7 @@ if op_xlsx is not None :
         df_date = op[op.수술일자 == op_date]
         df_date.to_excel(writer, sheet_name=f'20{op_date} - 수술')    
         df_date.to_excel(writer_total, sheet_name=f'20{op_date} - 수술')  
-    writer.save()
+    writer.close()
     writer_total.save()
     
     wb_o = load_workbook("수술.xlsx")
